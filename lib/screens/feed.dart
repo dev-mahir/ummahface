@@ -13,17 +13,19 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            PostCard(),
-            SizedBox(height: 12),
-            PostCard(),
-            SizedBox(height: 12),
-            PostCard(),
-          ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              PostCard(),
+              SizedBox(height: 12),
+              PostCard(),
+              SizedBox(height: 12),
+              PostCard(),
+            ],
+          ),
         ),
       ),
     );

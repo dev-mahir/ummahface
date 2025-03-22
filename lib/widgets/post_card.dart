@@ -19,6 +19,7 @@ class _PostCardState extends State<PostCard> {
       child: Padding(
         padding: EdgeInsets.all(12),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

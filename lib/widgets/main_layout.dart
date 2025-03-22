@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ummahface/constants/constants.dart';
-import 'package:ummahface/screens/feed.dart';
-import 'package:ummahface/screens/profile.dart';
 import 'package:ummahface/widgets/custom_drawer.dart';
+
+
 
 class MainLayout extends StatelessWidget {
   final Widget child;
@@ -14,42 +14,46 @@ class MainLayout extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        elevation: 3,
+        automaticallyImplyLeading: false,
         titleSpacing: 0,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ...appBarItems
-                .map(
-                  (item) => IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => item['widget']),
-                      );
-                    },
-                    icon: item['icon'],
-                  ),
-                )
-                .toList(),
-
-            
-          ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children:
+              appBarItems.map((item) {
+                return IconButton(
+                  icon: item['icon'],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => item['widget'],
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
         ),
         actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Profile()),
-              );
-            },
-            child: CircleAvatar(
-              backgroundImage: AssetImage('images/avatar.png'),
-            ),
+          Builder(
+            builder:
+                (context) => GestureDetector(
+                  onTap: () {
+                    Scaffold.of(
+                      context,
+                    ).openEndDrawer(); // ✅ Avatar Click -> Open Drawer
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('images/avatar.png'),
+                    ),
+                  ),
+                ),
           ),
         ],
       ),
-      drawer: CustomDrawer(),
+      endDrawer: CustomDrawer(),
       body: child,
     );
   }

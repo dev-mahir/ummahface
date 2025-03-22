@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ummahface/screens/feed.dart';
+import 'package:ummahface/screens/find-friends.dart';
 import 'package:ummahface/screens/message.dart';
 import 'package:ummahface/screens/saved_post.dart';
 import 'package:ummahface/screens/video.dart';
@@ -8,9 +9,9 @@ import 'package:ummahface/screens/video.dart';
 
 final List<Map<String, dynamic>> appBarItems = [
   {'icon': Icon(Icons.home_outlined), 'widget': Feed()},
-  {'icon': Icon(Icons.person_add_alt_1_outlined), 'widget': Feed()},
-  {'icon': Icon(Icons.chat_bubble_outline), 'widget': Feed()},
-  {'icon': Icon(Icons.videocam_outlined), 'widget': Feed()},
+  {'icon': Icon(Icons.person_add_alt_1_outlined), 'widget': FindFriends()},
+  {'icon': Icon(Icons.chat_bubble_outline), 'widget': Message()},
+  {'icon': Icon(Icons.videocam_outlined), 'widget': const Video()},
   {'icon': Icon(Icons.search), 'widget': Feed()},
   {'icon': Icon(Icons.notifications_none), 'widget': Feed()},
 ];

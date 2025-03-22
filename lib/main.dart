@@ -37,33 +37,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 3,
-        title: Row(
-          children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.home_outlined)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.person_add_alt)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.chat_bubble_outline)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.notifications_none)),
-          ],
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Profile()),
-              );
-            },
-            child: CircleAvatar(
-              backgroundImage: AssetImage('images/avatar.png'),
-            ),
-          ),
-        ],
-      ),
-
       drawer: CustomDrawer(),
       body: !isLoggedIn ? Feed() : Feed(),
     );
