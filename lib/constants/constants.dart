@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ummahface/screens/feed.dart';
 import 'package:ummahface/screens/find-friends.dart';
 import 'package:ummahface/screens/message.dart';
+import 'package:ummahface/screens/profile.dart';
 import 'package:ummahface/screens/saved_post.dart';
 import 'package:ummahface/screens/video.dart';
 
@@ -11,18 +12,19 @@ final List<Map<String, dynamic>> appBarItems = [
   {'icon': Icon(Icons.home_outlined), 'widget': Feed()},
   {'icon': Icon(Icons.person_add_alt_1_outlined), 'widget': FindFriends()},
   {'icon': Icon(Icons.chat_bubble_outline), 'widget': Message()},
-  {'icon': Icon(Icons.videocam_outlined), 'widget': const Video()},
+  {'icon': Icon(Icons.videocam_outlined), 'widget': const VideoScreen()},
   {'icon': Icon(Icons.search), 'widget': Feed()},
   {'icon': Icon(Icons.notifications_none), 'widget': Feed()},
 ];
 
 // drawer list items
 final List<Map<String, dynamic>> drawerItems = [
+  {'icon': Icons.hourglass_empty_outlined, 'title': 'Profile', 'widget': Profile()},
   {'icon': Icons.home, 'title': 'News Feed', 'widget': Feed()},
   {
     'icon': Icons.video_camera_back_outlined,
     'title': 'Video',
-    'widget': Video(),
+    'widget': VideoScreen(),
   },
   {'icon': Icons.home, 'title': 'Saved Posts', 'widget': SavedPost()},
   {'icon': Icons.chat_bubble_outline, 'title': 'Messages', 'widget': Message()},
@@ -40,3 +42,7 @@ final List<Map<String, dynamic>> drawerItems = [
   // {'icon': Icons.settings, 'title': 'Setting', 'route': '/setting'},
   // {'icon': Icons.logout, 'title': 'Logout', 'route': '/logout'},
 ];
+
+
+
+

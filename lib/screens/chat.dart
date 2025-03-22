@@ -1,5 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:ummahface/widgets/CustomCircleAvatar.dart';
+import 'package:video_player/video_player.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+List<Map<String, dynamic>> chat = [
+  {"type": "text", "text": "Hi", "isSent": false, "time": "12 hrs"},
+  {"type": "text", "text": "Hello", "isSent": true, "time": "12 hrs"},
+  {
+    "type": "video",
+    "videoUrl": "assets/videos/chat.mp4",
+    "thumbnail": "https://example.com/video_thumbnail.jpg",
+    "isSent": false,
+    "time": "5m",
+  },
+  {
+    "type": "audio",
+    "audioUrl": "https://example.com/audio.mp3",
+    "duration": "0:30",
+    "isSent": true,
+    "time": "10m",
+  },
+  {
+    "type": "file",
+    "fileName": "document.pdf",
+    "fileUrl": "https://example.com/document.pdf",
+    "fileSize": "2MB",
+    "isSent": false,
+    "time": "15m",
+  },
+  {
+    "type": "link",
+    "link": "https://flutter.dev",
+    "title": "Flutter Official Site",
+    "description": "Flutter is an open-source UI toolkit by Google.",
+    "thumbnail": "https://example.com/flutter_thumbnail.jpg",
+    "isSent": true,
+    "time": "20m",
+  },
+];
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -8,163 +48,227 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  List<Map<String, dynamic>> messages = [
-    {"text": "hi", "isSent": false, "time": "12 hrs"},
-    {"text": "hi", "isSent": true, "time": "12 hrs"},
-  ];
+  final ImagePicker _picker = ImagePicker();
 
-  void sendMessage() {
-    if (_messageController.text.trim().isNotEmpty) {
-      setState(() {
-        messages.add({
-          "text": _messageController.text,
-          "isSent": true,
-          "time": "Just now",
-        });
+  void _sendMessage({String? text}) {
+    if (text != null && text.trim().isNotEmpty) {
+      chat.add({
+        "type": "text",
+        "text": text,
+        "isSent": true,
+        "time": "Just now",
       });
-      _messageController.clear();
+      setState(() {});
+    }
+    _messageController.clear();
+  }
+
+  void _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      chat.add({
+        "type": "image",
+        "imageUrl": pickedFile.path,
+        "isSent": true,
+        "time": "Now",
+      });
+      setState(() {});
+    }
+  }
+
+  void _pickVideo() async {
+    final pickedFile = await _picker.pickVideo(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      chat.add({
+        "type": "video",
+        "videoUrl": pickedFile.path,
+        "isSent": true,
+        "time": "Now",
+      });
+      setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage('images/avatar.png'),
-              radius: 16,
-            ),
-            SizedBox(width: 10),
-            Text(
-              "mahir12",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          Icon(Icons.more_vert, color: Colors.black),
-          SizedBox(width: 10),
-        ],
-      ),
+      appBar: AppBar(title: Text("Chat")),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(12),
-              itemCount: messages.length,
+              itemCount: chat.length,
               itemBuilder: (context, index) {
-                final msg = messages[index];
+                final msg = chat[index];
                 return Align(
                   alignment:
                       msg['isSent']
                           ? Alignment.centerRight
                           : Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisAlignment:
-                          msg['isSent']
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
-                      children: [
-                        if (!msg['isSent']) // Show avatar only for received messages
-                          CustomCircleAvatar(
-                            size: 40,
-                            borderRadius: 50,
-                            imagePath: 'images/avatar.png',
-                          ),
-                        SizedBox(width: 8), // Space between avatar & text
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                msg['isSent']
-                                    ? Colors.green
-                                    : Colors
-                                        .grey[300], // Different colors for sent & received messages
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            msg['text'],
-                            style: TextStyle(
-                              color:
-                                  msg['isSent'] ? Colors.white : Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: _buildChatBubble(msg),
                 );
               },
             ),
           ),
-          Divider(height: 1),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.attachment, color: Colors.green),
-                        SizedBox(width: 10),
-                        Icon(
-                          Icons.emoji_emotions_outlined,
-                          color: Colors.green,
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: TextField(
-                            controller: _messageController,
-                            decoration: InputDecoration(
-                              hintText: "Write Something...",
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                GestureDetector(
-                  onTap: sendMessage,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green,
-                    child: Icon(Icons.send, color: Colors.white),
-                  ),
-                ),
-              ],
+          _buildMessageInput(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildChatBubble(Map<String, dynamic> msg) {
+    switch (msg['type']) {
+      case "text":
+        return _buildTextMessage(msg['text'], msg['isSent']);
+      case "image":
+        return _buildImageMessage(msg['imageUrl']);
+      case "video":
+        return _buildVideoMessage(msg);
+      case "audio":
+        return _buildAudioMessage(msg['audioUrl'], msg['duration']);
+      case "file":
+        return _buildFileMessage(msg);
+      case "link":
+        return _buildLinkMessage(msg);
+      default:
+        return SizedBox.shrink();
+    }
+  }
+
+  Widget _buildTextMessage(String text, bool isSent) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: isSent ? Colors.green : Colors.grey[300],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: isSent ? Colors.white : Colors.black),
+      ),
+    );
+  }
+
+  Widget _buildImageMessage(String imageUrl) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Image.file(File(imageUrl), width: 150),
+    );
+  }
+
+  Widget _buildVideoMessage(Map<String, dynamic> msg) {
+    return GestureDetector(
+      onTap:
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => VideoPlayerScreen(videoUrl: msg['videoUrl']),
             ),
+          ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          color: Colors.black12,
+          width: 150,
+          height: 100,
+          child: Icon(Icons.play_circle_fill, size: 50, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAudioMessage(String audioUrl, String duration) {
+    return Row(
+      children: [
+        IconButton(
+          icon: Icon(Icons.play_arrow),
+          onPressed: () => AudioPlayer().play(UrlSource(audioUrl)),
+        ),
+        Text(duration),
+      ],
+    );
+  }
+
+  Widget _buildFileMessage(Map<String, dynamic> msg) {
+    return GestureDetector(
+      onTap: () => launchUrl(Uri.parse(msg['fileUrl'])),
+      child: Row(
+        children: [
+          Icon(Icons.insert_drive_file),
+          SizedBox(width: 8),
+          Text(msg['fileName']),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLinkMessage(Map<String, dynamic> msg) {
+    return GestureDetector(
+      onTap: () => launchUrl(Uri.parse(msg['link'])),
+      child: Row(
+        children: [Icon(Icons.link), SizedBox(width: 8), Text(msg['title'])],
+      ),
+    );
+  }
+
+  Widget _buildMessageInput() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      child: Row(
+        children: [
+          IconButton(icon: Icon(Icons.photo), onPressed: _pickImage),
+          IconButton(icon: Icon(Icons.video_library), onPressed: _pickVideo),
+          Expanded(
+            child: TextField(
+              controller: _messageController,
+              decoration: InputDecoration(hintText: "Write something..."),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.send, color: Colors.green),
+            onPressed: () => _sendMessage(text: _messageController.text),
           ),
         ],
       ),
     );
+  }
+}
+
+class VideoPlayerScreen extends StatefulWidget {
+  final String videoUrl;
+  VideoPlayerScreen({required this.videoUrl});
+
+  @override
+  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+}
+
+class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+  late VideoPlayerController _videoController;
+
+  @override
+  void initState() {
+    super.initState();
+    _videoController =
+        widget.videoUrl.startsWith('assets/')
+            ? VideoPlayerController.asset(widget.videoUrl)
+            : VideoPlayerController.file(File(widget.videoUrl));
+    _videoController.initialize().then((_) {
+      setState(() {});
+      _videoController.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Center(child: VideoPlayer(_videoController)));
   }
 }

@@ -1,0 +1,67 @@
+List<Map<String, dynamic>> chat = [
+  {"type": "text", "text": "Hi", "isSent": false, "time": "12 hrs"},
+  {"type": "text", "text": "Hello", "isSent": true, "time": "12 hrs"},
+  {"type": "text", "text": "How are you?", "isSent": false, "time": "1s"},
+  {"type": "text", "text": "I am fine.", "isSent": true, "time": "1s"},
+  {
+    "type": "image",
+    "imageUrl": "https://example.com/image.jpg",
+    "isSent": true,
+    "time": "2m",
+  },
+  
+  {
+    "type": "video",
+    "videoUrl": "assets/videos/chat.mp4",
+    "thumbnail": "https://example.com/video_thumbnail.jpg",
+    "isSent": false,
+    "time": "5m",
+  },
+
+  {
+    "type": "audio",
+    "audioUrl": "https://example.com/audio.mp3",
+    "duration": "0:30",
+    "isSent": true,
+    "time": "10m",
+  },
+  {
+    "type": "file",
+    "fileName": "document.pdf",
+    "fileUrl": "https://example.com/document.pdf",
+    "fileSize": "2MB",
+    "isSent": false,
+    "time": "15m",
+  },
+  {
+    "type": "link",
+    "link": "https://flutter.dev",
+    "title": "Flutter Official Site",
+    "description": "Flutter is an open-source UI toolkit by Google.",
+    "thumbnail": "https://example.com/flutter_thumbnail.jpg",
+    "isSent": true,
+    "time": "20m",
+  },
+  {
+    "type": "location",
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "locationName": "San Francisco, CA",
+    "isSent": false,
+    "time": "25m",
+  },
+  {
+    "type": "sticker",
+    "stickerUrl": "https://example.com/sticker.png",
+    "isSent": true,
+    "time": "30m",
+  },
+  {
+    "type": "reply",
+    "replyTo": {"type": "text", "text": "How are you?", "isSent": false},
+    "text": "I am good, thanks!",
+    "isSent": true,
+    "time": "35m",
+  },
+  {"type": "deleted", "isSent": false, "time": "40m"},
+];
