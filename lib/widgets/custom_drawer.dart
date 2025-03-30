@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ummahface/constants/constants.dart';
+import 'package:ummahface/screens/profile/profile.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -10,43 +11,39 @@ class CustomDrawer extends StatelessWidget {
         bottomLeft: Radius.circular(0),
       ),
       child: Drawer(
-        
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              // decoration: BoxDecoration(color: Colors.green),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: 20),
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ), // Proper padding
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
+              title: Row(
                 children: [
-                  Row(
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage('assets/images/mahir.jpg'),
+                  ),
+                  SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'ummah',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32,
-                        ),
-                      ),
-                      Text(
-                        'face',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32,
-                          color: Colors.green,
-                        ),
-                      ),
+                      Text("Ummahface", style: TextStyle(fontSize: 18)),
+                      Text("Visit your profile"),
                     ],
                   ),
-                  // CircleAvatar(
-                  //   radius: 50,
-                  //   backgroundImage: AssetImage(
-                  //     "images/ummahface.png",
-                  //   ), // Profile Image
-                  // ),
                 ],
               ),
             ),
+            SizedBox(height: 20),
+
             ...drawerItems.map((item) {
               return ListTile(
                 leading: Icon(item['icon']),
@@ -62,6 +59,12 @@ class CustomDrawer extends StatelessWidget {
                 },
               );
             }).toList(),
+
+            ListTile(
+              leading: Icon(Icons.light_mode_outlined),
+              title: Text('Dark mode'),
+              onTap: () {},
+            ),
           ],
         ),
       ),

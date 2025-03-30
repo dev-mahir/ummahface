@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ummahface/screens/feed.dart';
 import 'package:ummahface/screens/forgot.dart';
 import 'package:ummahface/screens/login.dart';
-import 'package:ummahface/screens/profile.dart';
+import 'package:ummahface/screens/profile/profile.dart';
 import 'package:ummahface/screens/signup.dart';
 import 'package:ummahface/screens/update_password.dart';
+import 'package:ummahface/theme/theme.dart';
 import 'package:ummahface/widgets/custom_drawer.dart';
 
 void main() {
@@ -17,13 +18,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Simple Flutter App',
-      debugShowCheckedModeBanner: false, // Hides debug banner
-      theme: ThemeData(primarySwatch: Colors.blue),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      // themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       home: const HomePage(),
     );
   }
 }
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

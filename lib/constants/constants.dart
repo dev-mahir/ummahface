@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ummahface/screens/feed.dart';
 import 'package:ummahface/screens/find-friends.dart';
 import 'package:ummahface/screens/message.dart';
-import 'package:ummahface/screens/profile.dart';
+import 'package:ummahface/screens/profile/profile.dart';
 import 'package:ummahface/screens/saved_post.dart';
 import 'package:ummahface/screens/video.dart';
 
