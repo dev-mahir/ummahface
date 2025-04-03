@@ -1,4 +1,4 @@
-name: Flutter CI/CD
+name: Flutter CI on Windows
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # ✅ Windows Runner ব্যবহার হবে
 
     steps:
       - name: Checkout Repository
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.29.2"
+          flutter-version: "3.29.2"  # ✅ তোমার প্রয়োজন অনুযায়ী Flutter ভার্সন সেট করো
 
       - name: Install Dependencies
         run: flutter pub get
@@ -27,11 +27,11 @@ jobs:
       - name: Run Flutter Tests
         run: flutter test
 
-      - name: Build Android APK
-        run: flutter build apk --release
+      - name: Build Windows App
+        run: flutter build windows
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v3  # এখানে @v3 ঠিকমতো আছে কিনা চেক করো
+      - name: Upload Windows Build
+        uses: actions/upload-artifact@v3
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: release-windows
+          path: build/windows/runner/Release/
